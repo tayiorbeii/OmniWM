@@ -68,11 +68,13 @@ enum SettingsTOMLMigration {
         let versionTwoAddedHotkeyIDs = version <= 1 ? migrateVersionOne(&raw) : []
         let versionThreeDefaultedPaths = version <= 2 ? try migrateVersionTwo(&raw) : []
         let versionFourAddedHotkeyIDs = version <= 3 ? migrateVersionThree(&raw) : []
+        let versionFiveDefaultedPaths = version <= 4 ? migrateVersionFour(&raw) : []
         canonicalizeMigratedHotkeys(in: &raw)
         return SettingsMigrationReport(
             fromVersion: version,
             toVersion: SettingsTOMLCodec.currentSchemaVersion,
-            defaultedPaths: (versionOneReport?.defaultedPaths ?? []) + versionThreeDefaultedPaths,
+            defaultedPaths: (versionOneReport?.defaultedPaths ?? []) + versionThreeDefaultedPaths
+                + versionFiveDefaultedPaths,
             addedHotkeyIDs: (versionOneReport?.addedHotkeyIDs ?? []) + versionTwoAddedHotkeyIDs
                 + versionFourAddedHotkeyIDs,
             mappedHotkeys: versionOneReport?.mappedHotkeys ?? [],
@@ -265,6 +267,13 @@ enum SettingsTOMLMigration {
         let addedIDs = appendMissingUnassignedHotkeys(versionFourHotkeyIDs, to: &entries)
         raw["hotkeys"] = .array(entries)
         return addedIDs
+    }
+
+    private static func migrateVersionFour(_ raw: inout [String: TOMLNode]) -> [String] {
+        defer { raw["schemaVersion"] = .integer(5) }
+        guard raw["savedWindowGroups"] == nil else { return [] }
+        raw["savedWindowGroups"] = .array([])
+        return ["savedWindowGroups"]
     }
 
     private static func appendMissingUnassignedHotkeys(

@@ -99,16 +99,11 @@ final class SettingsStore {
     )
 
     var appRules = SettingsStore.defaultExport.appRules {
-        didSet {
-            if appRules != oldValue {
-                appRulesRevision &+= 1
-                appRulesDiagnosticSnapshot = WindowClassificationRulesSnapshot(
-                    revision: appRulesRevision,
-                    rules: appRules
-                )
-            }
-            scheduleSave()
-        }
+        didSet { appRulesDidChange(from: oldValue) }
+    }
+
+    var savedWindowGroups = SettingsStore.defaultExport.savedWindowGroups {
+        didSet { scheduleSave() }
     }
 
     var preventSleepEnabled = SettingsStore.defaultExport.preventSleepEnabled {
@@ -366,6 +361,17 @@ final class SettingsStore {
 }
 
 extension SettingsStore {
+    private func appRulesDidChange(from oldValue: [AppRule]) {
+        if appRules != oldValue {
+            appRulesRevision &+= 1
+            appRulesDiagnosticSnapshot = WindowClassificationRulesSnapshot(
+                revision: appRulesRevision,
+                rules: appRules
+            )
+        }
+        scheduleSave()
+    }
+
     private func layoutConfigurationDidChange() {
         layoutConfigurationRevision &+= 1
         scheduleSave()
@@ -424,7 +430,7 @@ extension SettingsStore {
         scratchpadLabels = SettingsStore.normalizedScratchpadLabels(export.scratchpads.labels)
         workspaceBar.applyAppearance(export.workspaceBar, monitorOverrides: export.monitorBarSettings)
 
-        appRules = export.appRules
+        applyWindowMatching(export)
         monitors.orientationOverrides = export.monitorOrientationSettings
         niri.monitorOverrides = export.monitorNiriSettings
 

@@ -99,6 +99,8 @@ struct SettingsExport: Equatable {
     var appearanceMode: AppearanceMode
     var tabRailAppIcons: Bool
 
+    var savedWindowGroups: [SavedWindowGroup] = []
+
     struct Focus: Codable, Equatable {
         var followsMouse: Bool
         var raiseOnMouseFocus: Bool
@@ -310,7 +312,8 @@ extension SettingsExport {
             clipboard: Clipboard.defaults(),
             quakeTerminal: QuakeTerminal.defaults(),
             appearanceMode: .dark,
-            tabRailAppIcons: false
+            tabRailAppIcons: false,
+            savedWindowGroups: []
         )
     }
 }

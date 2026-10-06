@@ -31,6 +31,7 @@ struct CanonicalTOMLConfig: Codable, Equatable {
     var monitorNiriOverrides: [MonitorNiriSettings]
     var monitorDwindleOverrides: [MonitorDwindleSettings]
     var monitorGapOverrides: [MonitorGapSettings]
+    var savedWindowGroups: [SavedWindowGroup]
 
     struct General: Codable, Equatable {
         var hotkeysEnabled: Bool
@@ -100,6 +101,7 @@ extension CanonicalTOMLConfig {
         monitorNiriOverrides = try container.decode([MonitorNiriSettings].self, forKey: .monitorNiriOverrides)
         monitorDwindleOverrides = try container.decode([MonitorDwindleSettings].self, forKey: .monitorDwindleOverrides)
         monitorGapOverrides = try container.decode([MonitorGapSettings].self, forKey: .monitorGapOverrides)
+        savedWindowGroups = try container.decode([SavedWindowGroup].self, forKey: .savedWindowGroups)
     }
 }
 
@@ -143,6 +145,7 @@ extension CanonicalTOMLConfig {
         monitorNiriOverrides = export.monitorNiriSettings
         monitorDwindleOverrides = export.monitorDwindleSettings
         monitorGapOverrides = export.monitorGapSettings
+        savedWindowGroups = export.savedWindowGroups
     }
 
     func toSettingsExport() -> SettingsExport {
@@ -182,7 +185,8 @@ extension CanonicalTOMLConfig {
             clipboard: clipboard,
             quakeTerminal: quakeTerminal,
             appearanceMode: appearance.mode,
-            tabRailAppIcons: appearance.tabRailAppIcons
+            tabRailAppIcons: appearance.tabRailAppIcons,
+            savedWindowGroups: savedWindowGroups
         )
     }
 
