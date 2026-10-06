@@ -17,7 +17,8 @@ final class CommandPaletteControllerTests: XCTestCase {
             (.clipboard, .commands),
             (.commands, .applications),
             (.applications, .files),
-            (.files, .windows)
+            (.files, .groups),
+            (.groups, .windows)
         ]
 
         for (currentMode, expectedMode) in transitions {
@@ -30,7 +31,8 @@ final class CommandPaletteControllerTests: XCTestCase {
 
     func testShiftTabCyclesBackwardAndWrapsAcrossAvailableModes() {
         let transitions: [(CommandPaletteMode, CommandPaletteMode)] = [
-            (.windows, .files),
+            (.windows, .groups),
+            (.groups, .files),
             (.menu, .windows),
             (.clipboard, .menu),
             (.commands, .clipboard),
@@ -65,11 +67,15 @@ final class CommandPaletteControllerTests: XCTestCase {
         )
         XCTAssertEqual(
             modeNavigationTarget(currentMode: .files, isMenuModeAvailable: false),
+            .groups
+        )
+        XCTAssertEqual(
+            modeNavigationTarget(currentMode: .groups, isMenuModeAvailable: false),
             .windows
         )
         XCTAssertEqual(
             modeNavigationTarget(currentMode: .windows, isMenuModeAvailable: false, modifiers: .shift),
-            .files
+            .groups
         )
         XCTAssertEqual(
             modeNavigationTarget(currentMode: .files, isMenuModeAvailable: false, modifiers: .shift),
@@ -131,6 +137,10 @@ final class CommandPaletteControllerTests: XCTestCase {
             directModeTarget(keyCode: UInt16(kVK_ANSI_6), characters: "6"),
             .files
         )
+        XCTAssertEqual(
+            directModeTarget(keyCode: UInt16(kVK_ANSI_7), characters: "7"),
+            .groups
+        )
         XCTAssertNil(
             directModeTarget(
                 keyCode: UInt16(kVK_ANSI_2),
@@ -164,6 +174,10 @@ final class CommandPaletteControllerTests: XCTestCase {
         XCTAssertEqual(
             CommandPalettePresentation.modeHint(for: .files),
             .init(title: "Files", shortcut: "⌘6")
+        )
+        XCTAssertEqual(
+            CommandPalettePresentation.modeHint(for: .groups),
+            .init(title: "Groups", shortcut: "⌘7")
         )
     }
 

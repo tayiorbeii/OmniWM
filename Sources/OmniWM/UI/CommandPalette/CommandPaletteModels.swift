@@ -18,6 +18,28 @@ struct CommandPaletteWindowItem: Identifiable {
     let markNames: [String]
 }
 
+struct CommandPaletteGroupItem: Identifiable {
+    let id: Int
+    let group: SavedWindowGroup
+    let issues: [SavedWindowGroupDefinitionIssue]
+}
+
+struct CommandPaletteGroupWindow: Identifiable {
+    let id: WindowToken
+    let appName: String
+    let title: String?
+    let workspaceName: String
+    let isAppHidden: Bool
+    let unresolvedClauses: [SavedWindowGroupUnresolvedClause]
+}
+
+struct CommandPaletteGroupResolution {
+    let itemID: Int
+    let outcome: Result<SavedWindowGroupResolution, SavedWindowGroupQueryFailure>
+    let members: [CommandPaletteGroupWindow]
+    let unresolved: [CommandPaletteGroupWindow]
+}
+
 struct CommandPaletteCommandItem: Identifiable {
     let spec: ActionSpec
     let shortcut: String
@@ -74,6 +96,7 @@ enum CommandPaletteSelectionID: Hashable {
     case command(String)
     case application(LauncherSectionID, String)
     case file(LauncherSectionID, String)
+    case group(Int)
 }
 
 enum CommandPaletteSelectionTrigger: Equatable {

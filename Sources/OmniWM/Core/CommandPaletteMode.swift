@@ -10,4 +10,5 @@ enum CommandPaletteMode: String, CaseIterable, Codable {
     case commands
     case applications
     case files
+    case groups
 }

@@ -939,11 +939,11 @@ Quake Terminal loads Ghostty's normal configuration files and their included fil
 
 #### Command Palette
 
-Quickly search windows, app menus, clipboard history, OmniWM commands, applications, or files from one shared palette:
+Quickly search windows, app menus, clipboard history, OmniWM commands, applications, files, or saved window groups from one shared palette:
 
 - Open it from the global shortcut shown in `Keyboard Shortcuts`
 - Use `Tab` / `Shift + Tab` to cycle forward or backward through the available modes
-- Use `Cmd + 1` for `Windows`, `Cmd + 2` for `Menu`, `Cmd + 3` for `Clipboard`, `Cmd + 4` for `Commands`, `Cmd + 5` for `Applications`, and `Cmd + 6` for `Files`
+- Use `Cmd + 1` for `Windows`, `Cmd + 2` for `Menu`, `Cmd + 3` for `Clipboard`, `Cmd + 4` for `Commands`, `Cmd + 5` for `Applications`, `Cmd + 6` for `Files`, and `Cmd + 7` for `Groups` (**Unreleased**)
 - Type to search; mark-name matches come first in Windows mode, then window title, app name, and workspace name, with focus recency breaking ties
 - Windows mode shows window marks and finds windows by mark name; its Mark and Remove Mark buttons act on the selected window
 - Menu results always show keyboard shortcuts when available
@@ -956,6 +956,7 @@ Quickly search windows, app menus, clipboard history, OmniWM commands, applicati
 - In Clipboard mode, `Enter` copies the selected entry; `Shift + Enter` pastes it into the previous app when that target is still available
 - Applications and Files open in a browse grid; switch either mode to a list from the view menu
 - Files shows recent documents before typing, supports type filters, and can reveal a selection in Finder with `Cmd + Enter`
+- **Unreleased:** Groups mode lists saved window groups; `Enter` resolves the selected group and shows its matching windows and any no-match or incomplete diagnostics without changing a window
 - `Escape` dismisses the palette
 
 Clipboard history starts disabled. Open Clipboard mode (`Cmd + 3`) and click **Enable**, or set `clipboard.historyEnabled = true` in `settings.toml`. History retains text, rich text, HTML, images, file references, and safe native formats within the configured limits; concealed, transient, and recognized password-manager content is skipped. A selected item has a preview, each row can be pasted or pinned, and Clear removes unpinned history. See the [command palette guide](https://omniwm.app/features/command-palette/#clipboard-history) for storage details.

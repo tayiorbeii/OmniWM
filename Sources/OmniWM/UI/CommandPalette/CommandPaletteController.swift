@@ -88,6 +88,7 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
 
     let environment: CommandPaletteEnvironment
     let presentation: CommandPalettePanel
+    let groupBrowser = CommandPaletteGroupBrowser()
     private var eventMonitor: Any?
 
     weak var wmController: WMController?
@@ -150,6 +151,7 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
         clipboardItems = isClipboardHistoryEnabled ? environment.clipboardItems(wmController) : []
         clipboardErrorText = nil
         commandItems = CommandPaletteSearch.buildCommandItems(from: wmController)
+        refreshGroupItems()
         menuSession.resetCache()
         isMenuLoading = false
         resetLauncherState(settings: wmController.settings)
@@ -214,6 +216,8 @@ final class CommandPaletteController: NSObject, NSWindowDelegate {
             loadMenuItemsIfNeeded()
         } else if selectedMode == .clipboard {
             refreshClipboardItems()
+        } else if selectedMode == .groups {
+            refreshGroupItems()
         } else if isLauncherMode {
             startLauncherSearch()
         }
@@ -398,6 +402,7 @@ extension CommandPaletteController {
         menuItems = []
         clipboardItems = []
         commandItems = []
+        groupBrowser.clear()
         isClipboardHistoryEnabled = false
     }
 

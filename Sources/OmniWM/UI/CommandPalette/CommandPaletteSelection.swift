@@ -68,7 +68,8 @@ extension CommandPaletteController {
              .clipboard,
              .commands,
              .applications,
-             .files:
+             .files,
+             .groups:
             return true
         case .menu:
             return isMenuModeAvailable
@@ -118,6 +119,8 @@ extension CommandPaletteController {
             return resolvedLauncherSelectionAction(for: trigger)
         case .files:
             return resolvedLauncherSelectionAction(for: trigger)
+        case .groups:
+            return nil
         }
     }
 
@@ -195,6 +198,8 @@ extension CommandPaletteController {
             return fileSections.flatMap { section in
                 section.items.map { .file(section.id, $0.id) }
             }
+        case .groups:
+            return filteredGroupItems.map { .group($0.id) }
         }
     }
 

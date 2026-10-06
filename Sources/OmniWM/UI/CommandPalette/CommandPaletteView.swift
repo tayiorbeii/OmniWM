@@ -123,7 +123,7 @@ struct CommandPaletteView: View {
                 symbolName: emptyStateSymbol,
                 text: emptyStateText
             )
-        } else if controller.selectedMode == .clipboard {
+        } else if controller.selectedMode == .clipboard || controller.selectedMode == .groups {
             GeometryReader { geometry in
                 HStack(spacing: 0) {
                     CommandPaletteResultsView(controller: controller, motionPolicy: motionPolicy)
@@ -131,7 +131,7 @@ struct CommandPaletteView: View {
                     Rectangle()
                         .fill(Color.primary.opacity(0.1))
                         .frame(width: 1)
-                    clipboardPreview
+                    detailPane
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
@@ -246,6 +246,8 @@ struct CommandPaletteView: View {
             String(localized: "Enter opens the selected application.")
         case .files:
             String(localized: "Enter opens the selected file.")
+        case .groups:
+            CommandPalettePresentation.groupsStatusText
         }
     }
 
@@ -268,6 +270,8 @@ struct CommandPaletteView: View {
         case .applications,
              .files:
             false
+        case .groups:
+            controller.filteredGroupItems.isEmpty
         }
     }
 
@@ -285,6 +289,8 @@ struct CommandPaletteView: View {
             "app.fill"
         case .files:
             "folder"
+        case .groups:
+            "rectangle.3.group"
         }
     }
 
@@ -310,13 +316,17 @@ struct CommandPaletteView: View {
             return String(localized: "No applications found")
         case .files:
             return String(localized: "No files found")
+        case .groups:
+            return controller.searchText.isEmpty
+                ? String(localized: "No saved window groups. Define savedWindowGroups in settings.toml.")
+                : String(localized: "No groups found")
         }
     }
 }
 
 struct CommandPaletteModePicker: View {
-    private static let buttonSize: CGFloat = 44
-    private static let buttonSpacing: CGFloat = 8
+    private static let buttonSize: CGFloat = 40
+    private static let buttonSpacing: CGFloat = 4
 
     static var compactWidth: CGFloat {
         CGFloat(CommandPaletteMode.allCases.count) * buttonSize
@@ -388,6 +398,7 @@ struct CommandPaletteModeIcon: View {
         case .commands: "command"
         case .applications: "square.grid.3x3"
         case .files: "folder"
+        case .groups: "rectangle.3.group"
         }
     }
 }

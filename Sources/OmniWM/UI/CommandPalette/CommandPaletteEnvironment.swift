@@ -72,6 +72,10 @@ private enum CommandPalettePasteKeyCode {
 
 @MainActor
 struct CommandPaletteEnvironment {
+    var savedWindowGroupReader: (WMController) -> SavedWindowGroupSnapshotReader = {
+        $0.defaultSavedWindowGroupReader
+    }
+
     var requestWindowMarkName: () -> String? = { CommandPaletteMarkNamePrompt.requestName() }
     var chooseWindowMarkNameToRemove: ([String]) -> String? = { markNames in
         CommandPaletteMarkRemovalPrompt.requestName(from: markNames)

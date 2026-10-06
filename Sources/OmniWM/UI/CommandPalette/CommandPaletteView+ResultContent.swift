@@ -26,6 +26,18 @@ extension CommandPaletteView {
     }
 
     @ViewBuilder
+    var detailPane: some View {
+        if controller.selectedMode == .groups {
+            CommandPaletteGroupDetailView(
+                item: controller.selectedGroupItem,
+                resolution: controller.selectedGroupResolution
+            )
+        } else {
+            clipboardPreview
+        }
+    }
+
+    @ViewBuilder
     var clipboardPreview: some View {
         if controller.isClipboardPreviewLoading {
             ProgressView()

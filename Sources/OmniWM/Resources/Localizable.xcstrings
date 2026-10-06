@@ -1,6 +1,138 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ has an invalid title regex: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ has an invalid title regex: %2$@"
+          }
+        }
+      }
+    },
+    "%@ has no bundle ID." : {
+
+    },
+    "%@ needs %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ needs %2$@"
+          }
+        }
+      }
+    },
+    "Active workspace on the focused monitor" : {
+
+    },
+    "All workspaces" : {
+
+    },
+    "Another group uses the same ID." : {
+
+    },
+    "Another group uses the same name." : {
+
+    },
+    "Enter resolves the selected group without changing any window." : {
+
+    },
+    "Exclude" : {
+
+    },
+    "Groups" : {
+
+    },
+    "Include" : {
+
+    },
+    "Incomplete: %lld matched, %lld unresolved, %lld stale" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Incomplete: %1$lld matched, %2$lld unresolved, %3$lld stale"
+          }
+        }
+      }
+    },
+    "Invalid" : {
+
+    },
+    "Invalid definition: fix it in settings.toml" : {
+
+    },
+    "Invalid group name" : {
+
+    },
+    "Lists the windows this group matches now" : {
+
+    },
+    "No focused monitor: the active workspace is unavailable" : {
+
+    },
+    "No groups found" : {
+
+    },
+    "No saved window groups. Define savedWindowGroups in settings.toml." : {
+
+    },
+    "PID %d" : {
+
+    },
+    "Press Return to resolve this group now. Resolving never changes a window." : {
+
+    },
+    "Resolved: %lld matched" : {
+
+    },
+    "Search saved window groups..." : {
+
+    },
+    "Select a group to inspect it" : {
+
+    },
+    "The focused monitor has no active workspace" : {
+
+    },
+    "The group has no inclusion clauses." : {
+
+    },
+    "The name is empty or contains control characters." : {
+
+    },
+    "This group is no longer in settings" : {
+
+    },
+    "Unresolved" : {
+
+    },
+    "accessibility role" : {
+
+    },
+    "app contains \"%@\"" : {
+
+    },
+    "app identity" : {
+
+    },
+    "role %@" : {
+
+    },
+    "subrole %@" : {
+
+    },
+    "title" : {
+
+    },
+    "title contains \"%@\"" : {
+
+    },
+    "title matches /%@/" : {
+
+    },
     "Notification Badges" : {
       "localizations" : {
         "ar" : {

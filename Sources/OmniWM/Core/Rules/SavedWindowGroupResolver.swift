@@ -125,7 +125,7 @@ struct SavedWindowGroupCatalog {
     struct Entry {
         let group: SavedWindowGroup
         let issues: [SavedWindowGroupDefinitionIssue]
-        fileprivate let compiled: CompiledSavedWindowGroup?
+        let compiled: CompiledSavedWindowGroup?
     }
 
     let entries: [Entry]

@@ -66,6 +66,7 @@ enum CommandPalettePresentation {
         case .commands: String(localized: "Search OmniWM commands...")
         case .applications: String(localized: "Search applications...")
         case .files: String(localized: "Search files...")
+        case .groups: String(localized: "Search saved window groups...")
         }
     }
 
@@ -87,6 +88,8 @@ enum CommandPalettePresentation {
             InlineHint(title: mode.localizedDisplayName, shortcut: "⌘5")
         case .files:
             InlineHint(title: mode.localizedDisplayName, shortcut: "⌘6")
+        case .groups:
+            InlineHint(title: mode.localizedDisplayName, shortcut: "⌘7")
         }
     }
 
@@ -111,6 +114,8 @@ enum CommandPalettePresentation {
                 return .applications
             case "6":
                 return .files
+            case "7":
+                return .groups
             default:
                 return nil
             }
@@ -179,6 +184,7 @@ extension CommandPaletteMode {
         case .commands: String(localized: "Commands")
         case .applications: String(localized: "Applications")
         case .files: String(localized: "Files")
+        case .groups: String(localized: "Groups")
         }
     }
 }

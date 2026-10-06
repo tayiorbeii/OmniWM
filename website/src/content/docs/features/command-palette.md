@@ -9,7 +9,7 @@ Open the palette with `Control + Option + Space` (configurable with the other [k
 
 ## Modes
 
-The palette has six modes:
+The palette has seven modes:
 
 - **Windows** — `Cmd + 1`
 - **Menu** — `Cmd + 2`
@@ -17,6 +17,7 @@ The palette has six modes:
 - **Commands** — `Cmd + 4`
 - **Applications** — `Cmd + 5`
 - **Files** — `Cmd + 6`
+- **Groups** — `Cmd + 7` (**Unreleased:** available when building from `main`)
 
 `Tab` / `Shift + Tab` cycle forward or backward through the available modes.
 
@@ -39,6 +40,14 @@ In Windows mode, **Mark selected window** (`Control + Option + Shift + M`) names
 Commands mode lists OmniWM actions by category, including actions without a shortcut. Each row shows the layout it supports and its current shortcut, or **Unassigned** / **No shortcut** when none is available. Type to search across command names, related terms, and shortcuts; results then appear in relevance order without category headings.
 
 Select a compatible command and press `Enter` to run it. Commands that require a different layout remain visible with a dimmed row and cannot be run until that layout is active.
+
+## Saved window groups
+
+**Unreleased:** available when building from `main`.
+
+Groups mode lists the [saved window groups](/config/settings-reference/#savedwindowgroups) defined in `settings.toml`, including invalid definitions, which carry an **Invalid** badge. Type to filter by group name. The detail pane shows the selected group's scope, inclusion and exclusion matchers, and any definition issues.
+
+Press `Enter` or click a group to resolve it against the managed windows that exist now. The pane lists the matching windows in order with their app, title, workspace, and a **Hidden** badge for windows of hidden apps, or explains why nothing resolved: no matching windows, an incomplete result with the windows and facts that could not be read, an invalid definition, or no focused monitor for an active-workspace group. Groups mode is read-only: resolving never focuses, reveals, moves, or marks a window, and the palette stays open. The same results are available from [`omniwmctl window group resolve`](/reference/cli/actions/#saved-window-groups).
 
 ## Applications and Files
 

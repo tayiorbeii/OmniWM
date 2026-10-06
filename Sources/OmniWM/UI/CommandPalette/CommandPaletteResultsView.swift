@@ -109,6 +109,18 @@ struct CommandPaletteResultsView: View {
         case .applications,
              .files:
             EmptyView()
+        case .groups:
+            ForEach(controller.filteredGroupItems) { item in
+                CommandPaletteGroupRow(
+                    item: item,
+                    isSelected: controller.selectedItemID == .group(item.id),
+                    onSelect: {
+                        controller.selectedItemID = .group(item.id)
+                        controller.selectCurrent()
+                    }
+                )
+                .id(CommandPaletteSelectionID.group(item.id))
+            }
         }
     }
 

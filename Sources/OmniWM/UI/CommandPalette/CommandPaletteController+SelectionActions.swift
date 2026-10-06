@@ -21,8 +21,13 @@ extension CommandPaletteController {
         guard selectedItemID == previousSelectionID,
               let action = resolvedSelectionAction(for: trigger)
         else {
-            if selectedMode == .windows {
+            switch selectedMode {
+            case .windows:
                 actionFeedbackText = windowSelectionFeedback(for: trigger, selectedItemID: previousSelectionID)
+            case .groups:
+                resolveSelectedGroup()
+            default:
+                break
             }
             return
         }

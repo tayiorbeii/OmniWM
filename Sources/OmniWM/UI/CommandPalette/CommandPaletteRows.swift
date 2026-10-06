@@ -303,6 +303,54 @@ struct CommandPaletteClipboardRow: View {
     }
 }
 
+struct CommandPaletteGroupRow: View {
+    let item: CommandPaletteGroupItem
+    let isSelected: Bool
+    let onSelect: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            HStack(spacing: 10) {
+                Image(systemName: "rectangle.3.group")
+                    .font(.system(size: 18, weight: .medium))
+                    .foregroundColor(.secondary)
+                    .frame(width: 28, height: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.group.name)
+                        .font(.system(size: 13, weight: .medium))
+                        .lineLimit(1)
+                    Text(CommandPalettePresentation.groupScopeDescription(item.group.scope))
+                        .font(.system(size: 11))
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
+                }
+                .layoutPriority(1)
+
+                Spacer(minLength: 8)
+
+                if !item.issues.isEmpty {
+                    Text("Invalid")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 3)
+                        .background(Color.orange.opacity(0.16))
+                        .clipShape(Capsule())
+                }
+            }
+            .modifier(CommandPaletteResultRowStyle(isSelected: isSelected))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(item.group.name)
+        .accessibilityValue(CommandPalettePresentation.groupScopeDescription(item.group.scope))
+        .accessibilityHint(String(localized: "Lists the windows this group matches now"))
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
 private struct CommandPaletteResultRowStyle: ViewModifier {
     let isSelected: Bool
 
