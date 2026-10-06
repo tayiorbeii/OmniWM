@@ -56,11 +56,19 @@ struct CompiledWindowRule {
             && nonEmpty(rule.axSubrole) != nil
     }
 
-    func matches(_ facts: WindowRuleFacts) -> Bool {
-        guard matchesApp(bundleId: facts.ax.bundleId, appName: facts.appName) else { return false }
+    var requiresAccessibilityRole: Bool {
+        nonEmpty(rule.axRole) != nil || nonEmpty(rule.axSubrole) != nil
+    }
 
+    func matches(_ facts: WindowRuleFacts) -> Bool {
+        matchesApp(bundleId: facts.ax.bundleId, appName: facts.appName)
+            && matchesTitle(facts.ax.title)
+            && matchesAccessibilityRole(role: facts.ax.role, subrole: facts.ax.subrole)
+    }
+
+    func matchesTitle(_ title: String?) -> Bool {
         if let titleSubstring = nonEmpty(rule.titleSubstring) {
-            guard let title = facts.ax.title,
+            guard let title,
                   title.localizedCaseInsensitiveContains(titleSubstring)
             else {
                 return false
@@ -68,18 +76,22 @@ struct CompiledWindowRule {
         }
 
         if let titleRegex {
-            guard let title = facts.ax.title else { return false }
+            guard let title else { return false }
             let range = NSRange(title.startIndex..., in: title)
             guard titleRegex.firstMatch(in: title, range: range) != nil else {
                 return false
             }
         }
 
-        if let axRole = nonEmpty(rule.axRole), facts.ax.role != axRole {
+        return true
+    }
+
+    func matchesAccessibilityRole(role: String?, subrole: String?) -> Bool {
+        if let axRole = nonEmpty(rule.axRole), role != axRole {
             return false
         }
 
-        if let axSubrole = nonEmpty(rule.axSubrole), facts.ax.subrole != axSubrole {
+        if let axSubrole = nonEmpty(rule.axSubrole), subrole != axSubrole {
             return false
         }
 
