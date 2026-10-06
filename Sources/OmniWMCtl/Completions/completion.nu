@@ -22,6 +22,8 @@ const omniwmctl_catalog = {
     windowActionNames: #{{windowActionNames}}
     windowMarkActionNames: #{{windowMarkActionNames}}
     windowMarkListFlags: #{{windowMarkListFlags}}
+    windowGroupActionNames: #{{windowGroupActionNames}}
+    windowGroupListFlags: #{{windowGroupListFlags}}
     shellNames: #{{shellNames}}
     valueFlags: #{{valueFlags}}
     flagValuesByName: #{{flagValuesByName}}
@@ -75,9 +77,12 @@ def omniwmctl_choices [words: list<string>] {
         }
         window => {
             if $count == 1 { return $catalog.windowActionNames }
-            if $action != "mark" { return [] }
-            let mark_action = ($words | get -o 2 | default "")
-            if $count == 2 { $catalog.windowMarkActionNames } else if $count == 3 and $mark_action == "list" { $catalog.windowMarkListFlags } else { [] }
+            let nested_action = ($words | get -o 2 | default "")
+            if $action == "mark" {
+                if $count == 2 { $catalog.windowMarkActionNames } else if $count == 3 and $nested_action == "list" { $catalog.windowMarkListFlags } else { [] }
+            } else if $action == "group" {
+                if $count == 2 { $catalog.windowGroupActionNames } else if $count == 3 and $nested_action == "list" { $catalog.windowGroupListFlags } else { [] }
+            } else { [] }
         }
         subscribe => { $catalog.subscribeTokens }
         watch => { $catalog.watchTokens }

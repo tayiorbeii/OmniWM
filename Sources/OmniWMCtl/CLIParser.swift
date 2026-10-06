@@ -238,6 +238,9 @@ enum CLIParser {
         if arguments.first == "mark" {
             return try parseWindowMarkRequest(id: id, arguments: Array(arguments.dropFirst()))
         }
+        if arguments.first == "group" {
+            return try parseWindowGroupRequest(id: id, arguments: Array(arguments.dropFirst()))
+        }
 
         guard let action = arguments.first.flatMap(IPCWindowActionName.init(rawValue:)),
               let descriptor = IPCAutomationManifest.windowActionDescriptors.first(where: { $0.name == action }),
@@ -298,6 +301,7 @@ enum CLIParser {
         let workspaceLines = IPCAutomationManifest.workspaceActionDescriptors.map(\.path)
         let windowLines = IPCAutomationManifest.windowActionDescriptors.map(\.path)
         let windowMarkLines = IPCAutomationManifest.windowMarkActionDescriptors.map(\.path)
+        let windowGroupLines = IPCAutomationManifest.windowGroupActionDescriptors.map(\.path)
         let captureLines = IPCAutomationManifest.captureActionDescriptors.map(\.path)
 
         var lines = [
@@ -316,6 +320,7 @@ enum CLIParser {
         lines += workspaceLines.map { "  omniwmctl \($0)" }
         lines += windowLines.map { "  omniwmctl \($0)" }
         lines += windowMarkLines.map { "  omniwmctl \($0)" }
+        lines += windowGroupLines.map { "  omniwmctl \($0)" }
         lines += [
             "  omniwmctl subscribe <\(subscriptionNames)> [--no-send-initial] [--reconnect] [--format json|ndjson]",
             "  omniwmctl subscribe --all [--no-send-initial] [--reconnect] [--format json|ndjson]",

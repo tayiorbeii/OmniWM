@@ -143,6 +143,10 @@ _omniwmctl()
         __omniwmctl_compgen "#{{windowMarkActionNames}}"
       elif [[ ${COMP_CWORD} -eq 4 && "${COMP_WORDS[2]}" == "mark" && "${COMP_WORDS[3]}" == "list" ]]; then
         __omniwmctl_compgen "#{{windowMarkListFlags}}"
+      elif [[ ${COMP_CWORD} -eq 3 && "${COMP_WORDS[2]}" == "group" ]]; then
+        __omniwmctl_compgen "#{{windowGroupActionNames}}"
+      elif [[ ${COMP_CWORD} -eq 4 && "${COMP_WORDS[2]}" == "group" && "${COMP_WORDS[3]}" == "list" ]]; then
+        __omniwmctl_compgen "#{{windowGroupListFlags}}"
       fi
       return 0
       ;;

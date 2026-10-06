@@ -12,6 +12,8 @@ final class NuCompletionTests: XCTestCase {
         XCTAssertFalse(script.contains("#{{"))
         XCTAssertTrue(script.contains("    windowMarkActionNames: ["))
         XCTAssertTrue(script.contains("    windowMarkListFlags: ["))
+        XCTAssertTrue(script.contains("    windowGroupActionNames: ["))
+        XCTAssertTrue(script.contains("    windowGroupListFlags: ["))
         XCTAssertEqual(script, CLICompletionGenerator.script(for: .nu))
     }
 
@@ -73,6 +75,12 @@ final class NuCompletionTests: XCTestCase {
         try assertCompletions("omniwmctl window mark ", CLICompletionCatalog.windowMarkActionNames)
         try assertCompletions("omniwmctl window mark list ", CLICompletionCatalog.windowMarkListFlags)
         try assertCompletions("omniwmctl window mark set saved ", [])
+    }
+
+    func testWindowGroupActionAndListFlagCompletions() throws {
+        try assertCompletions("omniwmctl window group ", CLICompletionCatalog.windowGroupActionNames)
+        try assertCompletions("omniwmctl window group list ", CLICompletionCatalog.windowGroupListFlags)
+        try assertCompletions("omniwmctl window group resolve Browsers ", [])
     }
 
     func testNestedCommandsAndLiteralArguments() throws {

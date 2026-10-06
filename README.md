@@ -691,6 +691,8 @@ Diagnostics can be scripted with `omniwmctl capture start trace`, `omniwmctl cap
 
 `omniwmctl window mark` can name, list, focus, summon, and remove runtime window marks. See [Window Marks](https://omniwm.app/reference/cli/actions/#window-marks).
 
+**Unreleased:** `omniwmctl window group` can list, inspect, and resolve saved window groups from settings without changing any window. See [Saved Window Groups](https://omniwm.app/reference/cli/actions/#saved-window-groups).
+
 For setup, installation options, commands, queries, rules, subscriptions, and security details, see the [IPC & CLI Reference](https://omniwm.app/reference/cli/overview/).
 
 ## Quick Start

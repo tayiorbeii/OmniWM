@@ -80,7 +80,7 @@ enum CLICompletionCatalog {
     }
 
     static var windowActionNames: [String] {
-        sortedUnique(IPCAutomationManifest.windowActionDescriptors.map(\.name.rawValue) + ["mark"])
+        sortedUnique(IPCAutomationManifest.windowActionDescriptors.map(\.name.rawValue) + ["group", "mark"])
     }
 
     static var windowMarkActionNames: [String] {
@@ -88,6 +88,14 @@ enum CLICompletionCatalog {
     }
 
     static var windowMarkListFlags: [String] {
+        ["--json"]
+    }
+
+    static var windowGroupActionNames: [String] {
+        IPCAutomationManifest.windowGroupActionDescriptors.map(\.name.rawValue)
+    }
+
+    static var windowGroupListFlags: [String] {
         ["--json"]
     }
 

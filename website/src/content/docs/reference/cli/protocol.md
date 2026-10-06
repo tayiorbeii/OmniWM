@@ -13,7 +13,7 @@ sidebar:
 {
   "version": 18,
   "id": "<uuid>",
-  "kind": "<ping|version|command|capture|query|rule|workspace|window|window-mark|subscribe>",
+  "kind": "<ping|version|command|capture|query|rule|workspace|window|window-mark|window-group|subscribe>",
   "authorizationToken": "<token>",
   "payload": { ... }
 }
@@ -172,7 +172,7 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
   "kind": "<ping|version|command|capture|query|rule|workspace|window|window-mark|subscribe>",
   "status": "<success|executed|ignored|error|subscribed>",
   "result": {
-    "kind": "<pong|version|capture|workspace-bar|active-workspace|focused-monitor|apps|metrics|focused-window|windows|workspaces|displays|rules|rule-actions|queries|commands|subscriptions|capabilities|subscribed|window-marks>",
+    "kind": "<pong|version|capture|workspace-bar|active-workspace|focused-monitor|apps|metrics|focused-window|windows|workspaces|displays|rules|rule-actions|queries|commands|subscriptions|capabilities|subscribed|window-marks|window-groups|window-group|window-group-resolution>",
     "payload": { ... }
   }
 }
@@ -181,6 +181,8 @@ Workspace requests use this flat wire shape. For `move-to-monitor`, `force` is o
 Optional response fields are omitted when unavailable. For example, a successful response has no `code` key; it does not send `"code": null`.
 
 A `window mark list` response has `kind: "window-mark"` and `result.kind: "window-marks"`. Its `result.payload.marks` array contains each mark's `name`, `workspace` (`id`, `rawName`, `displayName`, optional `number`), `app` (`name`, optional `bundleId`), and optional window `title`. Other mark actions return `status: "executed"` without a result payload.
+
+`window group` requests use `kind: "window-group"` with a payload of `{"name": "list"}`, `{"name": "inspect", "group": "<name>"}`, or `{"name": "resolve", "group": "<name>"}`. `list` returns `result.kind: "window-groups"` with a `groups` array of `id`, `name`, `scope` (`active-workspace` or `all-workspaces`), `inclusionCount`, `exclusionCount`, and `isValid`. `inspect` returns `result.kind: "window-group"` with the definition's `id`, `name`, `scope`, `include` and `exclude` matchers, and `issues` (`code`, optional `clause` with `kind` and `index`, optional `message`). `resolve` returns `result.kind: "window-group-resolution"` with `status` (`resolved`, `no-match`, or `incomplete`), the captured `workspace` for `active-workspace` groups, ordered `members`, `unresolved` windows, and `stale` window IDs. Each window has a session-scoped `id`, optional `workspace`, `app`, and `title`, `isAppHidden`, `matchedClause` for members, and `unresolvedClauses` naming the clause and missing `facts` (`application`, `title`, or `accessibility-role`). An `invalid_group` or `group_scope_unavailable` failure includes the `window-group` definition as its result.
 
 Authorization, protocol, validation, and routing failures keep the originating response `kind`. For example:
 

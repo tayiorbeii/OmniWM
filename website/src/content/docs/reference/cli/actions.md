@@ -42,6 +42,26 @@ Marks give live managed windows unique names across workspaces. They last until 
 
 ---
 
+## Saved Window Groups
+
+**Unreleased:** available when building from `main`.
+
+Saved window groups are defined in [`savedWindowGroups`](/config/settings-reference/#savedwindowgroups). These actions are read-only: they never focus, reveal, move, or relayout a window, and they never create, change, or remove marks. Group names and mark names are separate namespaces.
+
+| Action | Description |
+|--------|-------------|
+| `window group list [--json]` | List configured groups with their scope, clause counts, and whether each definition is valid |
+| `window group inspect <name>` | Show a group's scope, inclusion and exclusion matchers, and definition issues without reading any window |
+| `window group resolve <name>` | Match the group against the managed windows that exist now and list the members in order |
+
+Resolution takes one snapshot. `activeWorkspace` groups use the active workspace on the focused monitor and fail with `group_scope_unavailable` when there is no focused monitor or active workspace; they never fall back to another monitor or to all workspaces. Temporarily hidden app windows are included; scratchpad windows are not. Members are ordered by their earliest matching inclusion clause, then by process and window ID, and an exclusion always wins.
+
+The result status is `resolved`, `no-match` when the complete snapshot matched nothing, or `incomplete` when a required fact such as a title or accessibility role could not be read, an exclusion could not be evaluated, or a window closed during the snapshot. Incomplete results list each unresolved window with the clause and missing facts. A window whose exclusion cannot be evaluated is left out. Returned window IDs are session-scoped and only describe the moment of resolution.
+
+Failures are typed: `unknown_group`, `invalid_group_name`, `invalid_group` (the definition has issues, which are included in the response), and `group_scope_unavailable`.
+
+---
+
 ## Workspace Actions
 
 ```

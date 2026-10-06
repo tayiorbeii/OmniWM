@@ -21,6 +21,7 @@ public enum IPCRequestKind: String, Codable, Equatable, Sendable {
     case workspace
     case window
     case windowMark = "window-mark"
+    case windowGroup = "window-group"
     case subscribe
 }
 
@@ -34,6 +35,7 @@ public enum IPCResponseKind: String, Codable, Equatable, Sendable {
     case workspace
     case window
     case windowMark = "window-mark"
+    case windowGroup = "window-group"
     case subscribe
     case error
 
@@ -57,6 +59,8 @@ public enum IPCResponseKind: String, Codable, Equatable, Sendable {
             self = .window
         case .windowMark:
             self = .windowMark
+        case .windowGroup:
+            self = .windowGroup
         case .subscribe:
             self = .subscribe
         }
@@ -94,6 +98,10 @@ public enum IPCErrorCode: String, Codable, Equatable, Sendable, Error {
     case unsupportedLayout = "unsupported_layout"
     case duplicateMark = "duplicate_mark"
     case invalidMark = "invalid_mark"
+    case invalidGroupName = "invalid_group_name"
+    case unknownGroup = "unknown_group"
+    case invalidGroup = "invalid_group"
+    case groupScopeUnavailable = "group_scope_unavailable"
     case internalError = "internal_error"
 }
 

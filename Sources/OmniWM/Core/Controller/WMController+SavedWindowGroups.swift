@@ -42,20 +42,24 @@ extension WMController {
             return .failure(.invalidName)
         }
 
-        switch savedWindowGroupScope(group.group.scope) {
-        case let .success(scope):
+        return resolveSavedWindowGroup(group, reader: reader).mapError { .scopeUnavailable($0) }
+    }
+
+    func resolveSavedWindowGroup(
+        _ group: CompiledSavedWindowGroup,
+        reader: SavedWindowGroupSnapshotReader? = nil
+    ) -> Result<SavedWindowGroupResolution, SavedWindowGroupScopeFailure> {
+        savedWindowGroupScope(group.group.scope).map { scope in
             let snapshot = savedWindowGroupSnapshot(
                 for: group,
                 scope: scope,
                 reader: reader ?? defaultSavedWindowGroupReader
             )
-            return .success(SavedWindowGroupResolver.resolve(group, in: snapshot))
-        case let .failure(failure):
-            return .failure(.scopeUnavailable(failure))
+            return SavedWindowGroupResolver.resolve(group, in: snapshot)
         }
     }
 
-    private var defaultSavedWindowGroupReader: SavedWindowGroupSnapshotReader {
+    var defaultSavedWindowGroupReader: SavedWindowGroupSnapshotReader {
         SavedWindowGroupSnapshotReader(
             applicationInfo: { [weak self] pid in self?.resolvedAppInfo(for: pid) },
             windowFacts: { entry, includeTitle in

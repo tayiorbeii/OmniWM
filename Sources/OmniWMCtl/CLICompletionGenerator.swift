@@ -44,7 +44,9 @@ enum CLICompletionGenerator {
             "workspaceMoveOptionalFlags": shellWords(Catalog.workspaceMoveOptionalFlags),
             "windowActionNames": shellWords(Catalog.windowActionNames),
             "windowMarkActionNames": shellWords(Catalog.windowMarkActionNames),
-            "windowMarkListFlags": shellWords(Catalog.windowMarkListFlags)
+            "windowMarkListFlags": shellWords(Catalog.windowMarkListFlags),
+            "windowGroupActionNames": shellWords(Catalog.windowGroupActionNames),
+            "windowGroupListFlags": shellWords(Catalog.windowGroupListFlags)
         ])
     }
 
@@ -73,7 +75,9 @@ enum CLICompletionGenerator {
             "workspaceMoveOptionalFlags": shellWords(Catalog.workspaceMoveOptionalFlags),
             "windowActionNames": shellWords(Catalog.windowActionNames),
             "windowMarkActionNames": shellWords(Catalog.windowMarkActionNames),
-            "windowMarkListFlags": shellWords(Catalog.windowMarkListFlags)
+            "windowMarkListFlags": shellWords(Catalog.windowMarkListFlags),
+            "windowGroupActionNames": shellWords(Catalog.windowGroupActionNames),
+            "windowGroupListFlags": shellWords(Catalog.windowGroupListFlags)
         ])
     }
 
@@ -121,6 +125,8 @@ enum CLICompletionGenerator {
             "windowLines": fishCompletions(Catalog.windowActionNames, when: "__fish_seen_subcommand_from window"),
             "windowMarkActionLines": fishWindowMarkActionLines(),
             "windowMarkListFlagLines": fishWindowMarkListFlagLines(),
+            "windowGroupActionLines": fishWindowGroupActionLines(),
+            "windowGroupListFlagLines": fishWindowGroupListFlagLines(),
             "shellLines": fishCompletions(
                 CLIShell.allCases.map(\.rawValue),
                 when: "__fish_seen_subcommand_from completion"
@@ -192,6 +198,20 @@ enum CLICompletionGenerator {
         fishCompletions(
             Catalog.windowMarkListFlags,
             when: "__fish_seen_subcommand_from window; and __fish_seen_subcommand_from mark; and __fish_seen_subcommand_from list"
+        )
+    }
+
+    private static func fishWindowGroupActionLines() -> String {
+        fishCompletions(
+            Catalog.windowGroupActionNames,
+            when: "__fish_seen_subcommand_from window; and __fish_seen_subcommand_from group"
+        )
+    }
+
+    private static func fishWindowGroupListFlagLines() -> String {
+        fishCompletions(
+            Catalog.windowGroupListFlags,
+            when: "__fish_seen_subcommand_from window; and __fish_seen_subcommand_from group; and __fish_seen_subcommand_from list"
         )
     }
 

@@ -23,6 +23,9 @@ public enum IPCResultKind: String, Codable, Equatable, Sendable {
     case capabilities
     case subscribed
     case windowMarks = "window-marks"
+    case windowGroups = "window-groups"
+    case windowGroup = "window-group"
+    case windowGroupResolution = "window-group-resolution"
     case metrics
 }
 
@@ -77,6 +80,9 @@ public struct IPCResult: Codable, Equatable, Sendable {
         case capabilities(IPCCapabilitiesQueryResult)
         case subscribed(IPCSubscribeResult)
         case windowMarks(IPCWindowMarksResult)
+        case windowGroups(IPCWindowGroupsResult)
+        case windowGroup(IPCWindowGroupDefinition)
+        case windowGroupResolution(IPCWindowGroupResolution)
         case metrics(IPCMetricsQueryResult)
     }
 
@@ -164,6 +170,18 @@ public struct IPCResult: Codable, Equatable, Sendable {
         self.init(kind: .windowMarks, payload: .windowMarks(windowMarks))
     }
 
+    public init(windowGroups: IPCWindowGroupsResult) {
+        self.init(kind: .windowGroups, payload: .windowGroups(windowGroups))
+    }
+
+    public init(windowGroup: IPCWindowGroupDefinition) {
+        self.init(kind: .windowGroup, payload: .windowGroup(windowGroup))
+    }
+
+    public init(windowGroupResolution: IPCWindowGroupResolution) {
+        self.init(kind: .windowGroupResolution, payload: .windowGroupResolution(windowGroupResolution))
+    }
+
     public init(metrics: IPCMetricsQueryResult) {
         self.init(kind: .metrics, payload: .metrics(metrics))
     }
@@ -216,6 +234,12 @@ public struct IPCResult: Codable, Equatable, Sendable {
             payload = .subscribed(try container.decode(IPCSubscribeResult.self, forKey: .payload))
         case .windowMarks:
             payload = .windowMarks(try container.decode(IPCWindowMarksResult.self, forKey: .payload))
+        case .windowGroups:
+            payload = .windowGroups(try container.decode(IPCWindowGroupsResult.self, forKey: .payload))
+        case .windowGroup:
+            payload = .windowGroup(try container.decode(IPCWindowGroupDefinition.self, forKey: .payload))
+        case .windowGroupResolution:
+            payload = .windowGroupResolution(try container.decode(IPCWindowGroupResolution.self, forKey: .payload))
         case .metrics:
             payload = .metrics(try container.decode(IPCMetricsQueryResult.self, forKey: .payload))
         }
@@ -263,6 +287,12 @@ public struct IPCResult: Codable, Equatable, Sendable {
         case let .subscribed(payload):
             try container.encode(payload, forKey: .payload)
         case let .windowMarks(payload):
+            try container.encode(payload, forKey: .payload)
+        case let .windowGroups(payload):
+            try container.encode(payload, forKey: .payload)
+        case let .windowGroup(payload):
+            try container.encode(payload, forKey: .payload)
+        case let .windowGroupResolution(payload):
             try container.encode(payload, forKey: .payload)
         case let .metrics(payload):
             try container.encode(payload, forKey: .payload)

@@ -454,6 +454,8 @@ minWidth = 574.0
 
 ## savedWindowGroups
 
+**Unreleased:** available when building from `main`.
+
 Array of named window groups. A group stores matching intent, never live window IDs or marks, and is resolved on request against the managed windows that exist at that moment. Loading or saving groups never focuses, reveals, moves, or relayouts a window. The default is an empty list.
 
 | Key | Type | Description |

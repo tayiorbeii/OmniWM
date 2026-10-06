@@ -74,6 +74,10 @@ enum CLIRenderer {
              .unsupportedLayout,
              .duplicateMark,
              .invalidMark,
+             .invalidGroupName,
+             .unknownGroup,
+             .invalidGroup,
+             .groupScopeUnavailable,
              .invalidArguments,
              .invalidRequest,
              .none:
@@ -154,14 +158,20 @@ enum CLIRenderer {
         return CLIRenderedOutput(data: Data(text.utf8), destination: .standardError)
     }
 
-    private static func formattedResponseText(_ response: IPCResponse, format: CLIOutputFormat) -> String {
-        guard response.ok else {
-            let status = humanReadableStatus(for: response)
-            guard let result = response.result,
-                  case let .capture(capture) = result.payload
-            else { return status }
+    private static func formattedFailureText(_ response: IPCResponse, format: CLIOutputFormat) -> String {
+        let status = humanReadableStatus(for: response)
+        switch response.result?.payload {
+        case let .capture(capture):
             return "\(status)\n\(CLIDiagnosticsRenderer.formattedCapture(capture, format: format))"
+        case let .windowGroup(definition):
+            return "\(status)\n\(CLIWindowGroupRenderer.formattedDefinition(definition, format: format))"
+        default:
+            return status
         }
+    }
+
+    private static func formattedResponseText(_ response: IPCResponse, format: CLIOutputFormat) -> String {
+        guard response.ok else { return formattedFailureText(response, format: format) }
         guard let result = response.result else { return humanReadableStatus(for: response) }
 
         switch result.payload {
@@ -205,6 +215,10 @@ enum CLIRenderer {
             return CLIDiagnosticsRenderer.formattedMetrics(payload, format: format)
         case let .windowMarks(payload):
             return formattedWindowMarks(payload, format: format)
+        case .windowGroups,
+             .windowGroup,
+             .windowGroupResolution:
+            return CLIWindowGroupRenderer.formatted(result.payload, format: format)
         }
     }
 
@@ -292,10 +306,11 @@ enum CLIRenderer {
         let workspaceRows = payload.workspaceActions.map { [$0.path, $0.summary, "workspace"] }
         let windowRows = payload.windowActions.map { [$0.path, $0.summary, "window"] }
         let windowMarkRows = payload.windowMarkActions.map { [$0.path, $0.summary, "window-mark"] }
+        let windowGroupRows = payload.windowGroupActions.map { [$0.path, $0.summary, "window-group"] }
 
         return CLITableRenderer.formatRows(
             headers: ["PATH", "SUMMARY", "SURFACE"],
-            rows: commandRows + workspaceRows + windowRows + windowMarkRows,
+            rows: commandRows + workspaceRows + windowRows + windowMarkRows + windowGroupRows,
             format: format
         )
     }
@@ -326,6 +341,7 @@ enum CLIRenderer {
             ["workspace-actions", String(payload.workspaceActions.count)],
             ["window-actions", String(payload.windowActions.count)],
             ["window-mark-actions", String(payload.windowMarkActions.count)],
+            ["window-group-actions", String(payload.windowGroupActions.count)],
             ["subscriptions", String(payload.subscriptions.count)]
         ]
 
